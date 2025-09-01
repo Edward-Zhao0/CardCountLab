@@ -1,0 +1,72 @@
+.practice-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #668b6c;
+  min-height: 100vh;
+  position:relative;
+}
+
+.reset-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+  
+    background-color: #e74c3c;  /* red reset vibe */
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.2s ease;
+  }
+  
+  .reset-button:hover {
+    background-color: #c0392b; /* darker red on hover */
+  }
+
+.start-screen {
+    background: #ffffff;                      /* white card */
+    padding: 1rem;                         /* inner space */
+    border-radius: 20px;                   /* rounded corners */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);/* soft shadow */
+    text-align: center;                    /* center text */
+    width: min(300px);               /* responsive width */
+  }
+
+  .welcome-text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+
+  .practice-form {
+    display: flex;
+    flex-direction: column;   /* stack labels vertically */
+    gap: .5rem;                /* space between fields */
+    margin-bottom: 1.5rem;    /* space before button */
+  }
+  
+  .decks-input,
+  .difficulty-select {
+    margin-left: 0.5rem;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+
+  .start-button {
+    background-color: #46ab50;   /* blue */
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s ease;
+  }
+  
+  .start-button:hover {
+    background-color: #34833c;   /* darker blue on hover */
+  }
