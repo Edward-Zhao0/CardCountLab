@@ -1,6 +1,10 @@
 import "../styles/PracticeMode.css";
 
-const StartScreen = ({onStart}) => {
+const StartScreen = ({onStart,
+    numberOfDecks,
+    setNumberOfDecks,
+    assistsEnabled,
+    setAssistsEnabled,}) => {
   return (
     <div className="start-screen">
       <p className="welcome-text">Welcome to Practice Mode</p>
@@ -13,20 +17,23 @@ const StartScreen = ({onStart}) => {
             min="1" 
             max="8" 
             defaultValue="1"
+            value={numberOfDecks}
+            onChange={(e) => setNumberOfDecks(Number(e.target.value))}
             className="decks-input"
           />
         </label>
 
         <label>
-          Difficulty:
-          <select className="difficulty-select">
-            <option value="noAssists">No Assists</option>
-            <option value="assists">Assists</option>
-          </select>
+          Assists:
+          <input 
+            type="checkbox"
+            checked={assistsEnabled}
+            onChange={(e) => setAssistsEnabled(e.target.checked)}
+          />
         </label>
       </form>
 
-      <button className="start-button" type="button" onClick={onStart}>Start Practice</button>
+      <button className="start-button" type="button" onClick={() => onStart()}>Start Practice</button>
     </div>
   );
 };
