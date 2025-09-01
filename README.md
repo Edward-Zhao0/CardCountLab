@@ -1,12 +1,28 @@
-# React + Vite
+🃏 CardCountLab
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+CardCountLab is a practice tool for learning and improving card counting skills.
+The app is being built with React and is still in development.
 
-Currently, two official plugins are available:
+⸻
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+✨ Planned Features
+	•	Start Screen
+	•	Choose number of decks (1–8)
+	•	Toggle assists on or off
+	•	Start practice with one click
+	•	Practice Mode (coming soon)
+	•	Show cards one at a time for counting practice
+	•	Track and display running count
+	•	Difficulty options for with/without assists
+	•	Game Controls
+	•	Reset button to return to the start screen
+	•	Clean, simple UI with responsive layout
 
-## Expanding the ESLint configuration
+⸻
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🚧 Status
+
+This project is currently in development.
+Core structure and state management are in place — the next step is building out the actual card practice gameplay.
+
+Stay tuned for updates!
