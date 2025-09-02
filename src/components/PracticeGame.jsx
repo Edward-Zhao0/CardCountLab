@@ -120,7 +120,7 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
             </div>
             <p>Total: {calculateHandTotal(playerHand)}</p>
         </div>
-
+        {/*  */}
         <div className="controls">
             <button className="hit-button">Hit</button>
             <button className="stand-button">Stand</button>
