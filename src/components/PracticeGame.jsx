@@ -1,5 +1,8 @@
 // import "../styles/PracticeGame.css";
 import { useState } from "react";
+import { useEffect } from "react";
+import Card from "./Card.jsx";
+import "../styles/PracticeGame.css";
 
 const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
     const [deck, setDeck] = useState(shuffleDeck(generateDeck(numberOfDecks)));
@@ -7,6 +10,26 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
     const [dealerHand, setDealerHand] = useState([]);
     const [gameStatus, setGameStatus] = useState("waiting"); // "waiting", "in-progress", "player-bust", "dealer-bust", "player-win", "dealer-win", "push"
     const [showStartButton, setShowStartButton] = useState(true);
+    const [dealId, setDealId] = useState(0); //This is used so that the animation does not restart for every time I press stand or press hit
+    const [dealerHoleHidden, setDealerHoleHidden] = useState(true);
+
+    useEffect(() => {
+        if (gameStatus === "player-bust" || gameStatus === "dealer-bust" || gameStatus === "player-win" || gameStatus === "dealer-win" || gameStatus === "push") {
+            setShowStartButton(true);
+        }
+    }, [gameStatus]);
+
+    useEffect(() => {
+        if (calculateHandTotal(playerHand) > 21) {
+          setGameStatus("player-bust");
+        }
+    }, [playerHand]);
+
+    useEffect(() => {
+        if (calculateHandTotal(dealerHand) > 21) {
+          setGameStatus("dealer-bust");
+        }
+    }, [dealerHand]);
 
 
 
@@ -49,6 +72,12 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
         setPlayerHand([deck[0], deck[2]]);
         setDealerHand([deck[1], deck[3]]);
         setDeck(deck.slice(4));
+
+        //Hide the card of the dealer 
+        setDealerHoleHidden(true);
+        setDealId(prev => prev + 1); //new deal = new id
+
+
         setGameStatus("in-progress");
     }
 
@@ -68,15 +97,18 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
       
         setDealerHand(newHand);              // update dealer hand state
         setDeck(newDeck);                    // update deck state
+        if (calculateHandTotal(newHand) > 21) {
+            setGameStatus("player-bust");
+        }
     }
 
-    function renderCard(card, index) {
-        return (
-            <div key={index} className="card">
-                <p>{card.value} of {card.suit}</p>
-            </div>
-        );
-    }
+    const renderCard = (card, index) => (
+        <Card
+          key={`${card.value}-${card.suit}-${index}-${dealId}`} 
+          value={card.value}
+          suit={card.suit}
+        />
+    );
 
     function calculateHandTotal(hand) {
         let total = 0;
@@ -99,6 +131,45 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
         return total;
     }
 
+    function checkForBusts() {
+    }
+
+    function hit() {
+        if (gameStatus !== "in-progress") return; // Only allow hit if game is in progress
+        dealPlayerHand(deck, playerHand);
+    }
+
+    function stand() {
+        if (gameStatus !== "in-progress") return;
+      
+        let newDeck = [...deck];
+        let newDealerHand = [...dealerHand];
+      
+        while (calculateHandTotal(newDealerHand) < 17 && newDeck.length > 0) {
+          const card = newDeck.shift();
+          newDealerHand.push(card);
+        }
+      
+        setDealerHand(newDealerHand);
+        setDeck(newDeck);
+      
+        //Reveal hole card
+        setDealerHoleHidden(false);
+      
+        const dealerTotal = calculateHandTotal(newDealerHand);
+        const playerTotal = calculateHandTotal(playerHand);
+      
+        if (dealerTotal > 21) {
+          setGameStatus("dealer-bust");
+        } else if (dealerTotal > playerTotal) {
+          setGameStatus("dealer-win");
+        } else if (dealerTotal < playerTotal) {
+          setGameStatus("player-win");
+        } else {
+          setGameStatus("push");
+        }
+    }
+
 
   return (
     <div className="game-screen">
@@ -106,9 +177,15 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
         <p>Assists: {assistsEnabled ? "Yes" : "No"}</p>
         <div className="dealer">
             <p>Dealer's Hand: </p>
-            <div className="hand">
-                {/* Map loops through every element in array and calls function */}
-                {dealerHand.map(renderCard)}
+            <div className="dealer-hand">
+                {dealerHand.map((card, i) => (
+                    <Card
+                    key={`${card.value}-${card.suit}-${i}-${dealId}`}
+                    value={card.value}
+                    suit={card.suit}
+                    isFaceDown={i === 1 && dealerHoleHidden} // 🔑 hide only 2nd card if hole is hidden
+                    />
+                ))}
             </div>
         </div>
 
@@ -122,12 +199,20 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
         </div>
         {/*  */}
         <div className="controls">
-            <button className="hit-button">Hit</button>
-            <button className="stand-button">Stand</button>
-            <button className="deal-button">Deal</button>
-            <br />
+            {!showStartButton && <button className="hit-button" onClick={() => hit()}>Hit</button>}
+            {!showStartButton && <button className="stand-button" onClick={() => stand()}>Stand</button>}
+            {!showStartButton && <br />}
             {/* If true, show, if not, hide */}
-            {showStartButton && <button className="start-button2" onClick={() => {dealInitialHands(deck); setShowStartButton(false)}}>Start Game</button> }
+            {showStartButton && <button
+                className="deal-button"
+                onClick={() => {
+                    setDealId(prev => prev + 1);   // 🔑 new deal = new id
+                    dealInitialHands(deck);
+                    setShowStartButton(false);
+                }}
+                >
+                Deal Cards
+                </button> }
         </div>
 
         <div className="status">
