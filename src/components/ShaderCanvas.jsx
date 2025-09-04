@@ -5,11 +5,11 @@ export default function ShaderCanvas() {
   const canvasRef = useRef(null);
 
   // UI controls (hooked straight to uniforms)
-  const [speed, setSpeed] = useState(0.20);
-  const [hue, setHue] = useState(0.50);
-  const [hueVar, setHueVar] = useState(1.00);
-  const [density, setDensity] = useState(0.50);
-  const [disp, setDisp] = useState(0.66);
+  const [speed, setSpeed] = useState(0.02);
+  const [hue, setHue] = useState(0.55);
+  const [hueVar, setHueVar] = useState(0);
+  const [density, setDensity] = useState(0);
+  const [disp, setDisp] = useState(0.4);
 
   useEffect(() => {
     const canvas = canvasRef.current;

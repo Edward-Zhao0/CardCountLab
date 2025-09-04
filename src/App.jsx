@@ -1,18 +1,17 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/home.jsx";
 import PracticeMode from "./pages/practicemode.jsx";
+import Header from "./components/Header.jsx";
+import "./App.css"; // add global styles
 
 const App = () => {
   return (
-    <div>
+    <div className="app-container">
       <header>
-        <nav>
-          <Link to="/" style={{ marginRight: "1rem" }}>Home</Link>
-          <Link to="/practice">Practice Mode</Link>
-        </nav>
+        <Header />
       </header>
 
-      <main style={{ padding: "1rem" }}>
+      <main>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/practice" element={<PracticeMode />} />

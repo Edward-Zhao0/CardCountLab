@@ -75,7 +75,7 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
 
         //Hide the card of the dealer 
         setDealerHoleHidden(true);
-        setDealId(prev => prev + 1); //new deal = new id
+        setDealId(prev => prev + 1); 
 
 
         setGameStatus("in-progress");
@@ -83,20 +83,20 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
 
     function dealPlayerHand(deck, hand) {
         const card = deck[0];                
-        const newHand = [...hand, card];     // make a new array with the old hand + new card
-        const newDeck = deck.slice(1);       // make a new deck without the first card
+        const newHand = [...hand, card];     
+        const newDeck = deck.slice(1);       
       
-        setPlayerHand(newHand);              // update player hand state
-        setDeck(newDeck);                    // update deck state
+        setPlayerHand(newHand);              
+        setDeck(newDeck);                    
     }
 
     function dealDealerHand(deck, hand) {
         const card = deck[0];                
-        const newHand = [...hand, card];     // make a new array with the old hand + new card
-        const newDeck = deck.slice(1);       // make a new deck without the first card
+        const newHand = [...hand, card];     
+        const newDeck = deck.slice(1);       
       
-        setDealerHand(newHand);              // update dealer hand state
-        setDeck(newDeck);                    // update deck state
+        setDealerHand(newHand);              
+        setDeck(newDeck);                    
         if (calculateHandTotal(newHand) > 21) {
             setGameStatus("player-bust");
         }
@@ -183,7 +183,7 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
                     key={`${card.value}-${card.suit}-${i}-${dealId}`}
                     value={card.value}
                     suit={card.suit}
-                    isFaceDown={i === 1 && dealerHoleHidden} // 🔑 hide only 2nd card if hole is hidden
+                    isFaceDown={i === 1 && dealerHoleHidden}
                     />
                 ))}
             </div>
@@ -197,7 +197,7 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
             </div>
             <p>Total: {calculateHandTotal(playerHand)}</p>
         </div>
-        {/*  */}
+        
         <div className="controls">
             {!showStartButton && <button className="hit-button" onClick={() => hit()}>Hit</button>}
             {!showStartButton && <button className="stand-button" onClick={() => stand()}>Stand</button>}
@@ -206,7 +206,7 @@ const PracticeGame = ({numberOfDecks, assistsEnabled}) => {
             {showStartButton && <button
                 className="deal-button"
                 onClick={() => {
-                    setDealId(prev => prev + 1);   // 🔑 new deal = new id
+                    setDealId(prev => prev + 1);   
                     dealInitialHands(deck);
                     setShowStartButton(false);
                 }}

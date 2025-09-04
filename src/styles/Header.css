@@ -1,0 +1,58 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 5rem;   
+    background-color: #1e1e1e;
+    color: white;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  /* Left logo */
+  .header-left .logo {
+    font-size: 1.6rem;  
+    font-weight: bold;
+    margin: 0;
+    color: #fff;
+  }
+  
+  /* Center nav links */
+  .header-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2rem; 
+  }
+  
+  .header-center a {
+    text-decoration: none;
+    color: #ddd;
+    font-weight: 500;
+    font-size: 1.05rem;
+    transition: color 0.2s ease;
+  }
+  
+  .header-center a:hover {
+    color: #fff;
+  }
+  
+  /* Right button */
+  .header-right .login-button {
+    background-color: #4caf50; /* poker green */
+    color: white;
+    border: none;
+    padding: 0.8rem 1.6rem; 
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+  }
+  
+  .header-right .login-button:hover {
+    background-color: #66bb6a;
+    transform: scale(1.05);
+  }
