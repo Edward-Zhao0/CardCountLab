@@ -11,15 +11,14 @@
   }
   
   .logo {
-    height: 100px; /* adjust size */
+    height: 100px; 
     width: auto;
     cursor: pointer;
   }
 
-  /* Left logo */
   .header-left img.logo {
-    height: 100%;          /* scale within navbar height */
-    max-height: 40px;      /* control max size */
+    height: 100%;          
+    max-height: 40px;      
     width: auto;
   }
   
@@ -46,7 +45,7 @@
   
   /* Right button */
   .header-right .login-button {
-    background-color: #4caf50; /* poker green */
+    background-color: #4caf50;
     color: white;
     border: none;
     padding: 0.8rem 1.6rem; 
