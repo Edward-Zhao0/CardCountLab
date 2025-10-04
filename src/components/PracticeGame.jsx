@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import Card from "./Card.jsx";
 import "../styles/PracticeGame.css";
 
-const PracticeGame = ({ numberOfDecks, assistsEnabled }) => {
+  const PracticeGame = ({ numberOfDecks, assistsEnabled }) => {
   const [deck, setDeck] = useState(shuffleDeck(generateDeck(numberOfDecks)));
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
@@ -11,6 +11,7 @@ const PracticeGame = ({ numberOfDecks, assistsEnabled }) => {
   const [showStartButton, setShowStartButton] = useState(true);
   const [dealId, setDealId] = useState(0);
   const [dealerHoleHidden, setDealerHoleHidden] = useState(true);
+  const [runningCountValue, setRunningCountValue] = useState(0);
 
   useEffect(() => {
     if (
@@ -57,6 +58,7 @@ const PracticeGame = ({ numberOfDecks, assistsEnabled }) => {
   function dealInitialHands(d) {
     if (d.length < 4) {
       setDeck(shuffleDeck(generateDeck(numberOfDecks)));
+      resetRunningCount();
       return;
     }
     setPlayerHand([d[0], d[2]]);
@@ -65,6 +67,8 @@ const PracticeGame = ({ numberOfDecks, assistsEnabled }) => {
     setDealerHoleHidden(true);
     setDealId((p) => p + 1);
     setGameStatus("in-progress");
+
+    updateRunningCount([d[0], d[2], d[1]]);
   }
 
   function dealPlayerHand(d, hand) {
@@ -72,6 +76,7 @@ const PracticeGame = ({ numberOfDecks, assistsEnabled }) => {
     const newHand = [...hand, card];
     setPlayerHand(newHand);
     setDeck(d.slice(1));
+    updateRunningCount([card]);
   }
 
   function dealDealerHand(d, hand) {
@@ -128,11 +133,13 @@ const PracticeGame = ({ numberOfDecks, assistsEnabled }) => {
     while (calculateHandTotal(newDealerHand) < 17 && newDeck.length > 0) {
       const card = newDeck.shift();
       newDealerHand.push(card);
+      updateRunningCount([card]);
     }
 
     setDealerHand(newDealerHand);
     setDeck(newDeck);
     setDealerHoleHidden(false);
+    updateRunningCount([newDealerHand[1]]); 
 
     const dealerTotal = calculateHandTotal(newDealerHand);
     const playerTotal = calculateHandTotal(playerHand);
@@ -143,10 +150,39 @@ const PracticeGame = ({ numberOfDecks, assistsEnabled }) => {
     else setGameStatus("push");
   }
 
+  function numCardsLeft() {
+    return deck.length;
+  }
+
+  function cardValueForCount(card) {
+    const v = card.value;
+    if (["2","3","4","5","6"].includes(v)) return 1;
+    if (["10","J","Q","K","A"].includes(v)) return -1;
+    return 0; // 7,8,9
+  }
+
+  function updateRunningCount(newCards) {
+    let delta = 0;
+    for (const c of newCards) delta += cardValueForCount(c);
+    setRunningCountValue(prev => prev + delta);
+  }
+
+  function resetRunningCount() {
+    setRunningCountValue(0);
+  }
+
+  function runningCount() {
+    return runningCountValue;
+  }
+  
+  
+
   return (
     <div className="game-screen">
       <p>Decks: {numberOfDecks}</p>
       <p>Assists: {assistsEnabled ? "Yes" : "No"}</p>
+      <p>Cards Left: {numCardsLeft()}</p>
+      {assistsEnabled && <p>Running Count: {runningCount()}</p>}
 
       {/* Ring Graphic */}
       <div className="board">
