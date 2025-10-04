@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./pages/home.jsx";
 import PracticeMode from "./pages/practicemode.jsx";
 import Header from "./components/Header.jsx";
-import "./App.css"; // add global styles
+import "./App.css";
 
 const App = () => {
   return (

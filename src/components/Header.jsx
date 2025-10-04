@@ -1,12 +1,14 @@
-// Header.jsx
 import { Link } from "react-router-dom";
 import "../styles/Header.css";
+import textlogo from "../assets/LogoText.png";
 
 const Header = () => {
   return (
     <nav className="navbar">
         <div className="header-left">
-            <p className="logo">CardCountLab</p>
+            <Link to="/">
+                <img src={textlogo} alt="CardCountLab" className="logo" />
+            </Link>
         </div>
         <div className="header-center">
             <Link to="/">Home</Link>

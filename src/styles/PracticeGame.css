@@ -1,66 +1,110 @@
 @keyframes deal {
-    from {
-      opacity: 0;
-      transform: translateY(-20px) rotate(-5deg);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) rotate(0);
-    }
-  }
-  
-  .dealer-hand {
-    display: flex;
-    flex-direction: row;
-    gap: 2px;
-  }
-  
-  .dealer-hand .card {
-    margin-left: -20px;      
-    opacity: 0;
-    animation: deal 0.4s ease forwards;
-  }
-  
-  /* Make first card not shift left */
-  .dealer-hand .card:first-child {
-    margin-left: 0;
-  }
-  
-  .player-hand {
-    display: flex;
-    flex-direction: row;
-    gap: 2px;
-  }
-  
-  .player-hand .card {
-    opacity: 0;
-    animation: deal 0.4s ease forwards;
-  }
-  
+  from { opacity: 0; transform: translateY(-20px) rotate(-5deg); }
+  to   { opacity: 1; transform: translateY(0) rotate(0); }
+}
 
-  .dealer-hand .card:nth-child(1),
-  .player-hand .card:nth-child(1) {
-    animation-delay: 0s;
-  }
-  
-  .dealer-hand .card:nth-child(2),
-  .player-hand .card:nth-child(2) {
-    animation-delay: 0.2s;
-  }
-  
-  .dealer-hand .card:nth-child(3),
-  .player-hand .card:nth-child(3) {
-    animation-delay: 0.4s;
-  }
-  
-  .dealer-hand .card:nth-child(4),
-  .player-hand .card:nth-child(4) {
-    animation-delay: 0.6s;
-  }
-  
-  .dealer-hand .card:nth-child(5),
-  .player-hand .card:nth-child(5) {
-    animation-delay: 1s;
-  }
-  
-  /* extend more nth-childs if you expect more cards */
+.board {
+  position: relative;
+  width: min(980px, 94vw);
+  height: clamp(240px, 38vw, 420px); 
+  margin: 36px auto 40px;              
+  background: transparent;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  border: 3px solid rgba(16, 42, 20, 0.35);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.section {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 86%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dealer.section { top: 22px; }        
+.player.section { bottom: 96px; }         
+
+.dealer-hand,
+.player-hand {
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  justify-content: center;
+}
+
+.dealer-hand .card,
+.player-hand .card {
+  opacity: 0;
+  animation: deal 0.4s ease forwards;
+}
+
+.dealer-hand .card + .card,
+.player-hand .card + .card { margin-left: -20px; }
+.dealer-hand .card:first-child { margin-left: 0; }
+.dealer-hand .card:nth-child(1),
+.player-hand .card:nth-child(1) { animation-delay: 0s; }
+.dealer-hand .card:nth-child(2),
+.player-hand .card:nth-child(2) { animation-delay: 0.2s; }
+.dealer-hand .card:nth-child(3),
+.player-hand .card:nth-child(3) { animation-delay: 0.4s; }
+.dealer-hand .card:nth-child(4),
+.player-hand .card:nth-child(4) { animation-delay: 0.6s; }
+.dealer-hand .card:nth-child(5),
+.player-hand .card:nth-child(5) { animation-delay: 1s; }
+
+.hand-pill {
+  background: rgba(18, 32, 22, 0.6);
+  color: #e9f3eb;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+  user-select: none;
+}
+.dealer-pill { margin-top: 8px; }            
+.player-pill { margin-bottom: 8px; order: -1; } 
+
+.controls-bar {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;                     
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+  background: rgba(16, 42, 20, 0.25);
+  backdrop-filter: blur(6px);
+  padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  z-index: 2;
+}
+
+.game-btn {
+  border: none;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 1rem;
+  cursor: pointer;
+  color: #fff;
+  transition: transform .05s ease, box-shadow .15s ease, background .15s ease;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.18);
+}
+.game-btn.primary   { background: #46ab50; }
+.game-btn.primary:hover { background: #34833c; }
+.game-btn.secondary { background: #2b6a31; }
+.game-btn.secondary:hover { background: #245a2a; }
+.game-btn:active { transform: translateY(2px); }
+
+.game-screen { position: relative; }

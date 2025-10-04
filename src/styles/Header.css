@@ -10,12 +10,17 @@
     z-index: 1000;
   }
   
+  .logo {
+    height: 100px; /* adjust size */
+    width: auto;
+    cursor: pointer;
+  }
+
   /* Left logo */
-  .header-left .logo {
-    font-size: 1.6rem;  
-    font-weight: bold;
-    margin: 0;
-    color: #fff;
+  .header-left img.logo {
+    height: 100%;          /* scale within navbar height */
+    max-height: 40px;      /* control max size */
+    width: auto;
   }
   
   /* Center nav links */
