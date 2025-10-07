@@ -1,0 +1,170 @@
+.metrics-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.55); 
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 60;
+}
+
+.metrics-card {
+  width: min(860px, 92vw);
+  max-height: 86vh;
+  overflow: auto;
+  background: #0b1022; 
+  color: #e5e7eb;  
+  border: 1px solid rgba(148,163,184,0.18);
+  border-radius: 14px;
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.35),
+    0 1px 0 rgba(255,255,255,0.06) inset;
+  padding: 18px;
+}
+
+.metrics-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.metrics-header h2 {
+  margin: 0;
+  font-size: 20px;
+  letter-spacing: 0.2px;
+}
+
+.metrics-close {
+  border: none;
+  background: transparent;
+  color: #94a3b8;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 4px;
+}
+.metrics-close:hover { color: #e2e8f0; } 
+
+/* --- Stats Areas -------------------------------------------------------- */
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0,1fr));
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.metric {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(148,163,184,0.14);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.metric h3 {
+  margin: 0 0 6px 0;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94a3b8;
+}
+
+.metric .metric-value {
+  margin: 0;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #f8fafc; 
+}
+
+.metric .metric-value.win  { color: #16a34a; }  
+.metric .metric-value.loss { color: #dc2626; } 
+.metric .metric-value.push { color: #94a3b8; }  
+
+/* --- Sections --------------------------------------------------------- */
+
+.metrics-section {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px dashed rgba(148,163,184,0.2);
+}
+
+.metrics-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.metrics-section h4 {
+  margin: 0;
+  font-size: 14px;
+  letter-spacing: 0.2px;
+}
+
+.metrics-subtle {
+  font-size: 12px;
+  color: #94a3b8;
+}
+
+.metrics-empty {
+  font-size: 14px;
+  color: #94a3b8;
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed rgba(148,163,184,0.25);
+  border-radius: 10px;
+  padding: 12px;
+}
+
+/* --- Graph -------------------------------------------------------- */
+
+.metrics-sparkline {
+  width: 100%;
+  height: 80px;
+  display: block;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid rgba(148,163,184,0.14);
+}
+
+.sparkline-baseline {
+  stroke: rgba(148,163,184,0.25);
+  stroke-width: 1;
+}
+
+.sparkline-path {
+  stroke: #22c55e;
+  stroke-width: 2;
+}
+
+.sparkline-dot {
+  fill: #22c55e;
+}
+
+/* --- Results ---------------------------------------------------- */
+
+.result-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.result-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.4);
+  box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset;
+}
+
+.result-dot.win  { background: #16a34a; } 
+.result-dot.loss { background: #dc2626; }
+.result-dot.push { background: #64748b; } 
+
+@media (max-width: 720px) {
+  .metrics-grid {
+    grid-template-columns: repeat(2, minmax(0,1fr));
+  }
+}
