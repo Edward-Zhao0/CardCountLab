@@ -1,39 +1,65 @@
 import "../styles/PracticeMode.css";
 
-const StartScreen = ({onStart,
-    numberOfDecks,
-    setNumberOfDecks,
-    assistsEnabled,
-    setAssistsEnabled,}) => {
+const StartScreen = ({
+  onStart,
+  numberOfDecks,
+  setNumberOfDecks,
+  assistsEnabled,
+  setAssistsEnabled,
+  playWithMoney,
+  setPlayWithMoney,
+  startingBankroll,
+  setStartingBankroll,
+}) => {
   return (
     <div className="start-screen">
-      <p className="welcome-text">Welcome to Practice Mode</p>
+      <div className="row">
+        <label>Number of Decks</label>
+        <input
+          type="number"
+          min="1"
+          max="8"
+          value={numberOfDecks}
+          onChange={(e) => setNumberOfDecks(parseInt(e.target.value || "1", 10))}
+        />
+      </div>
 
-      <form className="practice-form">
-        <label>
-          Number of decks:
-          <input 
-            type="number" 
-            min="1" 
-            max="8" 
-            defaultValue="1"
-            value={numberOfDecks}
-            onChange={(e) => setNumberOfDecks(Number(e.target.value))}
-            className="decks-input"
+      <div className="row">
+        <label>Assists</label>
+        <input
+          type="checkbox"
+          checked={assistsEnabled}
+          onChange={(e) => setAssistsEnabled(e.target.checked)}
+        />
+      </div>
+
+      <div className="row">
+        <label>Play With Money</label>
+        <input
+          type="checkbox"
+          checked={playWithMoney}
+          onChange={(e) => setPlayWithMoney(e.target.checked)}
+        />
+      </div>
+
+      {playWithMoney && (
+        <div className="row">
+          <label>Starting Bankroll ($)</label>
+          <input
+            type="number"
+            min="1"
+            step="1"
+            value={startingBankroll}
+            onChange={(e) =>
+              setStartingBankroll(parseInt(e.target.value || "0", 10))
+            }
           />
-        </label>
+        </div>
+      )}
 
-        <label>
-          Assists:
-          <input 
-            type="checkbox"
-            checked={assistsEnabled}
-            onChange={(e) => setAssistsEnabled(e.target.checked)}
-          />
-        </label>
-      </form>
-
-      <button className="start-button" type="button" onClick={() => onStart()}>Start Practice</button>
+      <button className="start-button" onClick={onStart}>
+        Start
+      </button>
     </div>
   );
 };

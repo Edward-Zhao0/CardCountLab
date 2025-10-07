@@ -1,9 +1,8 @@
-// import "../styles/PracticeGame.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Card from "./Card.jsx";
 import "../styles/PracticeGame.css";
 
-  const PracticeGame = ({ numberOfDecks, assistsEnabled }) => {
+const PracticeGame = ({ numberOfDecks, assistsEnabled, onHandComplete }) => {
   const [deck, setDeck] = useState(shuffleDeck(generateDeck(numberOfDecks)));
   const [playerHand, setPlayerHand] = useState([]);
   const [dealerHand, setDealerHand] = useState([]);
@@ -12,6 +11,15 @@ import "../styles/PracticeGame.css";
   const [dealId, setDealId] = useState(0);
   const [dealerHoleHidden, setDealerHoleHidden] = useState(true);
   const [runningCountValue, setRunningCountValue] = useState(0);
+
+  const lastReportedRef = useRef({ dealId: -1 });
+  useEffect(() => {
+    const terminal = ["player-bust", "dealer-bust", "player-win", "dealer-win", "push"];
+    if (!terminal.includes(gameStatus)) return;
+    if (lastReportedRef.current.dealId === dealId) return;
+    if (typeof onHandComplete === "function") onHandComplete(gameStatus);
+    lastReportedRef.current = { dealId };
+  }, [gameStatus, dealId, onHandComplete]);
 
   useEffect(() => {
     if (
@@ -48,6 +56,8 @@ import "../styles/PracticeGame.css";
   }
 
   function shuffleDeck(d) {
+    // Fisher-Yates shuffle
+    // This works by iterating backwards through the array and swapping each element with a random earlier element (or itself).
     for (let i = d.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [d[i], d[j]] = [d[j], d[i]];
@@ -65,9 +75,10 @@ import "../styles/PracticeGame.css";
     setDealerHand([d[1], d[3]]);
     setDeck(d.slice(4));
     setDealerHoleHidden(true);
-    setDealId((p) => p + 1);
+    setDealId((p) => p + 1); // increment deal id here (only here)
     setGameStatus("in-progress");
 
+    // Count player cards + dealer upcard (not the hole card yet)
     updateRunningCount([d[0], d[2], d[1]]);
   }
 
@@ -84,7 +95,8 @@ import "../styles/PracticeGame.css";
     const newHand = [...hand, card];
     setDealerHand(newHand);
     setDeck(d.slice(1));
-    if (calculateHandTotal(newHand) > 21) setGameStatus("player-bust");
+    // FIX: dealer bust should set dealer-bust, not player-bust
+    if (calculateHandTotal(newHand) > 21) setGameStatus("dealer-bust");
   }
 
   const renderCard = (card, index) => (
@@ -94,28 +106,40 @@ import "../styles/PracticeGame.css";
   // Display like "8 / 18" for soft totals
   function handDisplay(hand) {
     if (!hand || hand.length === 0) return "";
-    let total = 0, aces = 0;
+    let total = 0,
+      aces = 0;
     for (const c of hand) {
       const v = c.value;
-      if (v === "A") { total += 11; aces++; }
-      else if (v === "K" || v === "Q" || v === "J") total += 10;
+      if (v === "A") {
+        total += 11;
+        aces++;
+      } else if (v === "K" || v === "Q" || v === "J") total += 10;
       else total += Number(v);
     }
     let alt = null;
     if (aces > 0) alt = total - 10;
-    while (total > 21 && aces > 0) { total -= 10; aces--; }
-    return (alt !== null && alt > 0 && alt !== total) ? `${alt} / ${total}` : `${total}`;
+    while (total > 21 && aces > 0) {
+      total -= 10;
+      aces--;
+    }
+    return alt !== null && alt > 0 && alt !== total ? `${alt} / ${total}` : `${total}`;
   }
 
   function calculateHandTotal(hand) {
-    let total = 0, aces = 0;
+    let total = 0,
+      aces = 0;
     for (const c of hand) {
       const v = c.value;
-      if (v === "A") { total += 11; aces++; }
-      else if (v === "K" || v === "Q" || v === "J") total += 10;
+      if (v === "A") {
+        total += 11;
+        aces++;
+      } else if (v === "K" || v === "Q" || v === "J") total += 10;
       else total += Number(v);
     }
-    while (total > 21 && aces > 0) { total -= 10; aces--; }
+    while (total > 21 && aces > 0) {
+      total -= 10;
+      aces--;
+    }
     return total;
   }
 
@@ -139,7 +163,9 @@ import "../styles/PracticeGame.css";
     setDealerHand(newDealerHand);
     setDeck(newDeck);
     setDealerHoleHidden(false);
-    updateRunningCount([newDealerHand[1]]); 
+
+    // Reveal dealer hole card (index 1) to the count when standing
+    if (newDealerHand[1]) updateRunningCount([newDealerHand[1]]);
 
     const dealerTotal = calculateHandTotal(newDealerHand);
     const playerTotal = calculateHandTotal(playerHand);
@@ -156,15 +182,15 @@ import "../styles/PracticeGame.css";
 
   function cardValueForCount(card) {
     const v = card.value;
-    if (["2","3","4","5","6"].includes(v)) return 1;
-    if (["10","J","Q","K","A"].includes(v)) return -1;
+    if (["2", "3", "4", "5", "6"].includes(v)) return 1;
+    if (["10", "J", "Q", "K", "A"].includes(v)) return -1;
     return 0; // 7,8,9
   }
 
   function updateRunningCount(newCards) {
     let delta = 0;
     for (const c of newCards) delta += cardValueForCount(c);
-    setRunningCountValue(prev => prev + delta);
+    setRunningCountValue((prev) => prev + delta);
   }
 
   function resetRunningCount() {
@@ -174,8 +200,6 @@ import "../styles/PracticeGame.css";
   function runningCount() {
     return runningCountValue;
   }
-  
-  
 
   return (
     <div className="game-screen">
@@ -219,14 +243,17 @@ import "../styles/PracticeGame.css";
         <div className="controls-bar">
           {!showStartButton ? (
             <>
-              <button className="game-btn secondary" onClick={hit}>Hit</button>
-              <button className="game-btn primary" onClick={stand}>Stand</button>
+              <button className="game-btn secondary" onClick={hit}>
+                Hit
+              </button>
+              <button className="game-btn primary" onClick={stand}>
+                Stand
+              </button>
             </>
           ) : (
             <button
               className="game-btn primary"
               onClick={() => {
-                setDealId((prev) => prev + 1);
                 dealInitialHands(deck);
                 setShowStartButton(false);
               }}
